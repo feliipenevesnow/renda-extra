@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScarcityCounter();
   initExitIntentModal();
   initScrollCenterSpotlight();
+  initLegalModals();
 });
 
 /* --------------------------------------------------------------------------
@@ -519,5 +520,117 @@ function initScrollCenterSpotlight() {
   // Initial check
   requestUpdate();
 }
+
+/* --------------------------------------------------------------------------
+   11. Google Ads Compliance & Legal Modals (Privacidade, Termos, Disclaimer)
+   -------------------------------------------------------------------------- */
+function initLegalModals() {
+  const overlay = document.getElementById('legalModalOverlay');
+  const titleEl = document.getElementById('legalModalTitle');
+  const bodyEl = document.getElementById('legalModalBody');
+  const closeBtn = document.getElementById('closeLegalModalBtn');
+  const dismissBtn = document.getElementById('dismissLegalModalBtn');
+
+  const openPrivacyBtn = document.getElementById('openPrivacyBtn');
+  const openTermsBtn = document.getElementById('openTermsBtn');
+  const openDisclaimerBtn = document.getElementById('openDisclaimerBtn');
+
+  if (!overlay || !titleEl || !bodyEl) return;
+
+  const legalDocs = {
+    privacy: {
+      title: 'Políticas de Privacidade (LGPD)',
+      content: `
+        <h4>1. Compromisso com a Privacidade</h4>
+        <p>A privacidade dos nossos visitantes é de extrema importância para nós. Esta política descreve os tipos de informações pessoais que recebemos e coletamos quando você visita este site e como guardamos essas informações, em total conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD).</p>
+        
+        <h4>2. Coleta e Uso de Informações</h4>
+        <p>Não coletamos dados pessoais sensíveis de navegação sem o seu consentimento. As únicas informações coletadas são dados técnicos anônimos (como tipo de navegador, páginas visualizadas e tempo de permanência) estritamente utilizados para aprimorar a experiência do usuário e mensurar o desempenho da página.</p>
+        
+        <h4>3. Processamento de Pagamento e Dados Financeiros</h4>
+        <p>Nenhum dado bancário, número de cartão de crédito ou senha é armazenado ou processado em nossos servidores. Todas as transações financeiras são intermediadas e processadas de forma segura e criptografada diretamente pela plataforma <strong>Hotmart</strong>, que conta com certificação de segurança internacional PCI-DSS.</p>
+        
+        <h4>4. Cookies e Tecnologias de Rastreamento</h4>
+        <p>Utilizamos cookies essenciais para garantir que funcionalidades do site operem corretamente (como a exibição de conteúdos e prevenção de duplicidade). Nenhum cookie é utilizado para fins ilícitos ou comercialização de dados com terceiros.</p>
+        
+        <h4>5. Seus Direitos</h4>
+        <p>Você tem o direito de solicitar esclarecimentos, correção ou exclusão de quaisquer dados de contato fornecidos voluntariamente. Para exercer esses direitos ou tirar dúvidas, entre em contato pelo e-mail: <strong>suporte.renda2026@gmail.com</strong>.</p>
+      `
+    },
+    terms: {
+      title: 'Termos e Condições de Uso',
+      content: `
+        <h4>1. Aceitação dos Termos</h4>
+        <p>Ao acessar e navegar neste site, você concorda expressamente em cumprir estes Termos e Condições de Uso, todas as leis e regulamentos aplicáveis. Se você não concordar com algum destes termos, está proibido de usar ou acessar este site.</p>
+        
+        <h4>2. Natureza do Conteúdo Comercializado</h4>
+        <p>O produto "Dinheiro Online Agora 2026" é um material digital de teor informativo e pedagógico, composto por guias práticos, análises de mercado e tutoriais passo a passo sobre modelos de trabalho e monetização digital.</p>
+        
+        <h4>3. Propriedade Intelectual</h4>
+        <p>Todo o conteúdo, layout, textos, marcas e elementos gráficos presentes nesta página e no manual digital são protegidos pelas leis de propriedade intelectual. É estritamente proibida a cópia, reprodução, revenda não autorizada (pirataria) ou distribuição pública do material sem autorização prévia por escrito.</p>
+        
+        <h4>4. Garantia Incondicional de 7 Dias</h4>
+        <p>Em respeito ao Código de Defesa do Consumidor e às políticas da Hotmart, garantimos o direito de arrependimento no prazo de até 7 (sete) dias corridos após a confirmação da compra. Caso solicite o reembolso dentro do prazo pela plataforma, 100% do valor investido será estornado.</p>
+        
+        <h4>5. Canal de Atendimento</h4>
+        <p>Para dúvidas sobre pedidos, acesso ao material ou suporte técnico, utilize nosso canal oficial: <strong>suporte.renda2026@gmail.com</strong>.</p>
+      `
+    },
+    disclaimer: {
+      title: 'Aviso Legal e Isenção de Responsabilidade sobre Resultados',
+      content: `
+        <h4>1. Inexistência de Garantia de Ganhos Fixos</h4>
+        <p>O conteúdo apresentado tem finalidade exclusivamente educacional e de orientação metodológica. Em hipótese alguma este material deve ser interpretado como garantia ou promessa de ganhos financeiros fixos, imediatos ou automáticos.</p>
+        
+        <h4>2. Fatores Determinantes de Resultado</h4>
+        <p>O sucesso e a geração de renda dependem única e exclusivamente da capacidade operacional, tempo dedicado, esforço individual, disciplina e condições de mercado de cada participante. Nenhuma informação aqui contida constitui consultoria financeira, contábil ou jurídica personalizada.</p>
+        
+        <h4>3. Isenção de Vínculo com Terceiros</h4>
+        <p>Este site é um projeto independente. Não possuímos parceria comercial, vínculo empregatício ou endosso formal das marcas e ferramentas mencionadas como referências didáticas (Google, Meta/Facebook/Instagram, TikTok ou OpenAI). Todas as marcas pertencem aos seus respectivos titulares.</p>
+      `
+    }
+  };
+
+  function openModal(type) {
+    const doc = legalDocs[type];
+    if (!doc) return;
+
+    titleEl.textContent = doc.title;
+    bodyEl.innerHTML = doc.content;
+    overlay.classList.add('active');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('active');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (openPrivacyBtn) {
+    openPrivacyBtn.addEventListener('click', () => openModal('privacy'));
+  }
+  if (openTermsBtn) {
+    openTermsBtn.addEventListener('click', () => openModal('terms'));
+  }
+  if (openDisclaimerBtn) {
+    openDisclaimerBtn.addEventListener('click', () => openModal('disclaimer'));
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      closeModal();
+    }
+  });
+}
+
 
 

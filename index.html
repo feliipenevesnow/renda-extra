@@ -13,6 +13,11 @@
   <meta property="og:description" content="10 ideias práticas e operacionais para lucrar no seu tempo livre usando o celular e Inteligência Artificial.">
   <meta property="og:image" content="assets/cover.png">
 
+  <!-- Favicon / App Icon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon.png">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1003,22 +1008,61 @@
   <!-- =========================================================================
        12. Site Footer & Compliance
        ========================================================================= -->
-  <footer class="site-footer">
+  <footer class="site-footer" id="rodape">
     <div class="container">
-      <div class="footer-logo-title">DINHEIRO ONLINE AGORA © 2026</div>
-      <p>Todos os direitos reservados • Compilado por Felipe dos Santos Neves</p>
+      <div class="footer-top-grid">
+        <div class="footer-brand-col">
+          <div class="footer-logo-title">DINHEIRO ONLINE AGORA © 2026</div>
+          <p class="footer-brand-desc">
+            Manual educacional e prático com estratégias validadas para geração de renda extra com celular e Inteligência Artificial.
+          </p>
+          <div class="footer-author-meta">
+            <span>Autor e Responsável: <strong>Felipe dos Santos Neves</strong></span>
+            <span>Canal de Suporte: <a href="mailto:suporte.renda2026@gmail.com" class="footer-support-email">suporte.renda2026@gmail.com</a></span>
+          </div>
+        </div>
 
-      <div class="footer-nav-links">
-        <a href="#inicio">Início</a>
-        <a href="#metodos">Os 10 Métodos</a>
-        <a href="#simulador">Simulador</a>
-        <a href="#comprar">Garantir Acesso</a>
-        <a href="#faq">Dúvidas Frequentes</a>
+        <div class="footer-links-col">
+          <div class="footer-col-title">Navegação</div>
+          <div class="footer-nav-links">
+            <a href="#inicio">Início</a>
+            <a href="#metodos">Os 10 Métodos</a>
+            <a href="#simulador">Simulador</a>
+            <a href="#comprar">Garantir Acesso</a>
+            <a href="#faq">Dúvidas Frequentes</a>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <div class="footer-col-title">Políticas e Conformidade</div>
+          <div class="footer-nav-links">
+            <button type="button" class="legal-link-btn" id="openPrivacyBtn">Políticas de Privacidade</button>
+            <button type="button" class="legal-link-btn" id="openTermsBtn">Termos de Uso</button>
+            <button type="button" class="legal-link-btn" id="openDisclaimerBtn">Aviso de Isenção e Ganhos</button>
+          </div>
+        </div>
       </div>
 
-      <p class="footer-disclaimer">
-        <strong>Aviso Legal de Segurança:</strong> Este produto não garante a obtenção de ganhos financeiros sem a aplicação prática dos métodos. Os resultados podem variar de acordo com o empenho, dedicação e perfil de cada participante. O produto comercializado é processado com total segurança pela plataforma Hotmart. Não possuímos vínculo direto com o TikTok, YouTube, Instagram ou OpenAI.
-      </p>
+      <div class="footer-divider"></div>
+
+      <div class="footer-disclaimers">
+        <p class="footer-disclaimer-item">
+          <strong>Aviso de Isenção sobre Resultados Financeiros:</strong> Quaisquer menções de faturamento, renda ou ganhos em potencial representam apenas estimativas e projeções pedagógicas baseadas no modelo operacional apresentado no guia. Não garantimos ganhos financeiros automáticos, lucros fixos ou enriquecimento sem a aplicação prática e dedicada das diretrizes. Os resultados dependem única e exclusivamente do esforço individual de cada participante.
+        </p>
+
+        <p class="footer-disclaimer-item">
+          <strong>Isenção de Vínculo com Terceiros (Google &amp; Meta):</strong> Este site não possui qualquer vínculo institucional, afiliação, endosso ou patrocínio do <em>Google LLC</em>, <em>Meta Platforms, Inc.</em> (Facebook/Instagram), <em>TikTok</em> ou <em>OpenAI</em>. O Google e as demais marcas citadas são marcas registradas de seus respectivos proprietários.
+        </p>
+
+        <p class="footer-disclaimer-item">
+          <strong>Processamento e Segurança:</strong> Todas as transações financeiras, emissão de notas e gerenciamento de garantias são operados de forma 100% criptografada e segura pela plataforma Hotmart. Seus dados cadastrais e de pagamento estão protegidos.
+        </p>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <span>© 2026 Dinheiro Online Agora. Todos os direitos reservados.</span>
+        <span>Acesso oficial via Hotmart • Garantia incondicional de 7 dias</span>
+      </div>
     </div>
   </footer>
 
@@ -1111,6 +1155,24 @@
       <button class="exit-modal-skip" id="skipExitModalBtn">
         Não, prefiro abrir mão do desconto e continuar sem uma nova renda extra...
       </button>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       16. Google Ads Legal & Compliance Modals (Privacidade / Termos)
+       ========================================================================= -->
+  <div class="legal-modal-overlay" id="legalModalOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="legal-modal-box">
+      <div class="legal-modal-header">
+        <h3 class="legal-modal-title" id="legalModalTitle">Termos de Uso</h3>
+        <button type="button" class="legal-modal-close" id="closeLegalModalBtn" aria-label="Fechar Modal">&times;</button>
+      </div>
+      <div class="legal-modal-body" id="legalModalBody">
+        <!-- Injetado dinamicamente via JS -->
+      </div>
+      <div class="legal-modal-footer">
+        <button type="button" class="btn-legal-dismiss" id="dismissLegalModalBtn">Entendido e Concordo</button>
+      </div>
     </div>
   </div>
 
