@@ -144,16 +144,16 @@ function initSocialProofToasts() {
   if (!toast || !toastAvatar || !toastName) return;
 
   const clicks = [
-    { name: 'Mariana C.', city: 'Campinas – SP', initials: 'MC', action: 'acabou de clicar no link de compra', time: 'agora mesmo' },
-    { name: 'Lucas M.', city: 'São Paulo – SP', initials: 'LM', action: 'acessou o checkout oficial', time: 'há 14 seg' },
-    { name: 'Rodrigo P.', city: 'Curitiba – PR', initials: 'RP', action: 'clicou no link de compra', time: 'há 28 seg' },
-    { name: 'Amanda S.', city: 'Belo Horizonte – MG', initials: 'AS', action: 'abriu a página de pagamento', time: 'há 42 seg' },
-    { name: 'Gabriel T.', city: 'Rio de Janeiro – RJ', initials: 'GT', action: 'acabou de clicar no link de compra', time: 'agora mesmo' },
-    { name: 'Juliana F.', city: 'Porto Alegre – RS', initials: 'JF', action: 'acessou o checkout oficial', time: 'há 18 seg' },
-    { name: 'Felipe R.', city: 'Fortaleza – CE', initials: 'FR', action: 'clicou no link de compra', time: 'há 35 seg' },
-    { name: 'Patrícia V.', city: 'Goiânia – GO', initials: 'PV', action: 'abriu a página de pagamento', time: 'há 50 seg' },
-    { name: 'Bruno K.', city: 'Florianópolis – SC', initials: 'BK', action: 'acabou de clicar no link de compra', time: 'agora mesmo' },
-    { name: 'Camila L.', city: 'Salvador – BA', initials: 'CL', action: 'acessou o checkout oficial', time: 'há 22 seg' }
+    { name: 'Mariana C.', city: 'Campinas – SP', initials: 'MC', action: 'acessou o Guia Oficial 2026', time: 'agora mesmo' },
+    { name: 'Lucas M.', city: 'São Paulo – SP', initials: 'LM', action: 'iniciou o Método 1 (IA)', time: 'há 14 seg' },
+    { name: 'Rodrigo P.', city: 'Curitiba – PR', initials: 'RP', action: 'acessou o manual digital', time: 'há 28 seg' },
+    { name: 'Amanda S.', city: 'Belo Horizonte – MG', initials: 'AS', action: 'baixou os materiais complementares', time: 'há 42 seg' },
+    { name: 'Gabriel T.', city: 'Rio de Janeiro – RJ', initials: 'GT', action: 'acessou o Guia Oficial 2026', time: 'agora mesmo' },
+    { name: 'Juliana F.', city: 'Porto Alegre – RS', initials: 'JF', action: 'iniciou a leitura do Método 3', time: 'há 18 seg' },
+    { name: 'Felipe R.', city: 'Fortaleza – CE', initials: 'FR', action: 'acessou o manual digital', time: 'há 35 seg' },
+    { name: 'Patrícia V.', city: 'Goiânia – GO', initials: 'PV', action: 'acessou os 10 métodos operacionais', time: 'há 50 seg' },
+    { name: 'Bruno K.', city: 'Florianópolis – SC', initials: 'BK', action: 'baixou os materiais complementares', time: 'agora mesmo' },
+    { name: 'Camila L.', city: 'Salvador – BA', initials: 'CL', action: 'iniciou o Guia Oficial 2026', time: 'há 22 seg' }
   ];
 
   let currentIndex = 0;
@@ -285,32 +285,58 @@ function init3DCardTilt() {
 function initAttentionGate() {
   const gate = document.getElementById('entryFocusGate');
   const btn = document.getElementById('btnEnterSite');
+  const closeBtn = document.getElementById('btnCloseGate');
 
-  if (!gate || !btn) return;
+  if (!gate) return;
 
-  // Key v3 ensures the leveled-out welcome gate displays immediately
+  // Se já foi fechado nesta sessão, não reexibe
   if (sessionStorage.getItem('renda_gate_passed_v3') === 'true') {
     gate.style.display = 'none';
     return;
   }
 
-  // Prevent background scrolling while the user is at the welcome gate
-  document.body.style.overflow = 'hidden';
+  // Mantém oculto inicialmente para carregamento limpo e conformidade com Google Ads
+  gate.style.display = 'none';
 
-  btn.addEventListener('click', () => {
-    btn.style.transform = 'scale(0.96)';
-    
-    setTimeout(() => {
-      // Add smooth dismiss class (scale, blur out and fade)
-      gate.classList.add('gate-dismiss');
-      document.body.style.overflow = '';
-      sessionStorage.setItem('renda_gate_passed_v3', 'true');
-    }, 120);
+  // Exibe suavemente após 3 segundos
+  const timer = setTimeout(() => {
+    if (sessionStorage.getItem('renda_gate_passed_v3') === 'true') return;
+    gate.style.display = 'flex';
+    gate.classList.remove('gate-dismiss');
+  }, 3000);
 
-    // Remove from layout after animation completes
+  function dismissGate() {
+    clearTimeout(timer);
+    gate.classList.add('gate-dismiss');
+    sessionStorage.setItem('renda_gate_passed_v3', 'true');
     setTimeout(() => {
       gate.style.display = 'none';
-    }, 550);
+    }, 450);
+  }
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      btn.style.transform = 'scale(0.96)';
+      setTimeout(dismissGate, 120);
+    });
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', dismissGate);
+  }
+
+  // Fechar ao clicar fora do card (no fundo)
+  gate.addEventListener('click', (e) => {
+    if (e.target === gate) {
+      dismissGate();
+    }
+  });
+
+  // Fechar com tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && gate.style.display !== 'none') {
+      dismissGate();
+    }
   });
 }
 
