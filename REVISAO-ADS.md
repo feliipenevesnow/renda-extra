@@ -8,7 +8,7 @@ A página continua vendendo o e-book “Dinheiro Online Agora 2026”, de Felipe
 - Removidos descontos e preços de referência sem comprovação, urgência de lançamento e modal de saída que pressionava o visitante.
 - Reescritos os 10 temas, benefícios, metadados e perguntas frequentes, eliminando promessas de facilidade, renda automática, pagamentos imediatos e retornos em prazos definidos.
 - Mantidos identidade visual, apresentação dos temas, preço, materiais complementares e URL original de compra na Hotmart.
-- A imagem com “edição limitada” e o selo de autoridade foram substituídos na página por uma apresentação ilustrativa em HTML e identificação textual do autor. Os arquivos originais permanecem em `assets/`, sem referência na página ou nos metadados.
+- A capa original (`assets/cover.png`) e a imagem do autor (`assets/author-badge.png`) estão preservadas e exibidas na página. A representação em texto foi retirada a pedido do autor, e a capa e sua legenda foram centralizadas, sem inclinação no celular. O título do produto permanece “Dinheiro Online Agora 2026”.
 - Explicados formato digital, pagamento único, aprovação do pagamento, eventuais custos de execução e procedimento de reembolso. Retiradas alegações não verificadas de criptografia, certificação e acesso vitalício.
 - Criadas páginas de privacidade, termos/reembolso e aviso sobre resultados, acessíveis por links comuns sem JavaScript. O contato e o nome completo usados são os que já constavam no repositório.
 - FAQ convertido para controles nativos. Removida dependência de fontes externas; esta versão não inclui pixels, analytics, cookies ou armazenamento no navegador.

@@ -75,16 +75,8 @@
 .secondary-link { color: var(--gold-primary); text-decoration: underline; text-underline-offset: 4px; }
 .purchase-note { color: #cbd5e1; font-size: .9rem; margin: 20px 0; line-height: 1.7; }
 .results-note { color: #bac5d5; font-size: .875rem; line-height: 1.7; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 12px; margin-top: 20px; }
-.book-preview { padding: 28px; min-height: 420px; background: linear-gradient(145deg, #16233b, #090f1c 75%); border: 1px solid #44516c; border-radius: 12px; display: flex; flex-direction: column; gap: 20px; }
-.book-preview h2 { font-size: 2.65rem; line-height: 1.05; letter-spacing: -1px; }
-.book-preview p { color: #dce3ee; font-size: 1rem; }
-.book-kicker { font-size: .65rem; letter-spacing: 2px; color: #facc15; }
-.book-rule { width: 50px; height: 3px; background: var(--gold-primary); }
-.book-number { font-size: 4.5rem; font-weight: 900; line-height: 1; color: var(--gold-primary); }
-.book-preview strong { font-size: .75rem; letter-spacing: 2px; }
-.mockup-wrapper .mockup-caption { max-width: 300px; text-align: center; font-size: .75rem; line-height: 1.6; color: #aab8cb; margin-top: 30px; }
+.mockup-wrapper .mockup-caption { position: relative; max-width: 300px; text-align: center; font-size: .8rem; line-height: 1.6; color: #aab8cb; margin: 24px auto 0; }
 .author-intro { display: flex; align-items: center; gap: 24px; }
-.author-initials { width: 76px; height: 76px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid var(--border-highlight); border-radius: 50%; font-size: 1.6rem; font-weight: 700; color: var(--gold-primary); }
 .author-intro h2 { font-size: 1.35rem; margin-bottom: 8px; }
 .learning-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
 .learning-card, .sample-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 28px; }
@@ -524,6 +516,7 @@ h1, h2, h3, h4, h5, h6 {
    7. 3D E-book Mockup & Visual Presentation
    -------------------------------------------------------------------------- */
 .hero-visual {
+  min-width: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -531,6 +524,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .mockup-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 380px;
+  min-width: 0;
   position: relative;
   perspective: 1200px;
   padding: 20px;
@@ -554,6 +553,8 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   z-index: 2;
   width: 290px;
+  max-width: 100%;
+  flex-shrink: 0;
   border-radius: 12px;
   box-shadow: 
     -15px 25px 50px rgba(0, 0, 0, 0.7),
@@ -2148,7 +2149,7 @@ h1, h2, h3, h4, h5, h6 {
    -------------------------------------------------------------------------- */
 @media (max-width: 991px) {
   .hero-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     text-align: center;
     gap: 50px;
   }
@@ -2290,7 +2291,12 @@ h1, h2, h3, h4, h5, h6 {
 
   .book-3d-card {
     width: 250px;
-    transform: rotateY(-8deg) rotateX(4deg);
+    transform: none;
+  }
+
+  .book-3d-card:hover,
+  .book-3d-card.is-center-active {
+    transform: none;
   }
 
   .floating-badge.badge-top {
@@ -3185,5 +3191,3 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.25);
 }
-
-
