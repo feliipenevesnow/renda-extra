@@ -392,7 +392,7 @@ function initScarcityCounter() {
 }
 
 /* --------------------------------------------------------------------------
-   9. Exit-Intent Psychological Retention Modal
+   9. Psychological Retention Modal (Disparado ao Rolar até o Final da Página)
    -------------------------------------------------------------------------- */
 function initExitIntentModal() {
   const modal = document.getElementById('exitModalOverlay');
@@ -401,12 +401,11 @@ function initExitIntentModal() {
 
   if (!modal) return;
 
-  let shownThisSession = sessionStorage.getItem('renda_exit_modal_shown') === 'true';
+  let shownThisPage = false;
 
   function showModal() {
-    if (shownThisSession) return;
-    shownThisSession = true;
-    sessionStorage.setItem('renda_exit_modal_shown', 'true');
+    if (shownThisPage) return;
+    shownThisPage = true;
     modal.classList.add('active');
     modal.setAttribute('aria-hidden', 'false');
   }
@@ -423,19 +422,49 @@ function initExitIntentModal() {
     if (e.target === modal) hideModal();
   });
 
-  // Desktop: Detect mouse moving outside the top of the viewport
-  document.addEventListener('mouseleave', (e) => {
-    if (e.clientY <= 15) {
-      showModal();
+  // Fechar com tecla ESC
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      hideModal();
     }
   });
 
-  // Mobile fallback: trigger after 60 seconds
-  setTimeout(() => {
-    if (window.innerWidth <= 768 && !shownThisSession) {
+  // Disparar quando o visitante rola até o final da página (área do rodapé)
+  let scrollTicking = false;
+
+  function checkScrollBottom() {
+    if (shownThisPage) return;
+
+    const scrollY = window.scrollY || window.pageYOffset;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const documentHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight
+    );
+
+    const distanceToBottom = documentHeight - (scrollY + viewportHeight);
+    const scrollPercentage = (scrollY + viewportHeight) / documentHeight;
+
+    // Dispara quando o usuário chega nos últimos 420px ou ultrapassa 88% do scroll da página
+    if (distanceToBottom <= 420 || scrollPercentage >= 0.88) {
       showModal();
+      window.removeEventListener('scroll', onScrollHandler);
     }
-  }, 60000);
+  }
+
+  function onScrollHandler() {
+    if (!scrollTicking) {
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        checkScrollBottom();
+        scrollTicking = false;
+      });
+    }
+  }
+
+  window.addEventListener('scroll', onScrollHandler, { passive: true });
 }
 
 /* --------------------------------------------------------------------------
