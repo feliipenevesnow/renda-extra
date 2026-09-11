@@ -1,8 +1,8 @@
 /** Visual enhancements only. Content, FAQ and checkout work without JavaScript. */
 document.addEventListener('DOMContentLoaded', () => {
   initStickyMobileBar();
+  init3DCardTilt();
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    init3DCardTilt();
     initScrollCenterSpotlight();
   }
 });
@@ -36,35 +36,65 @@ function initStickyMobileBar() {
 
 function init3DCardTilt() {
   const card = document.getElementById('bookMockup');
-  if (!card) return;
+  const wrapper = card?.closest('.mockup-wrapper');
+  if (!wrapper) return;
 
-  // Only apply tilt on desktop devices with hover support
-  if (window.matchMedia('(hover: hover)').matches) {
-    const wrapper = card.parentElement;
-    if (!wrapper) return;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const clamp = (value) => Math.max(-1, Math.min(1, value));
+  let pointerX = 0;
+  let pointerY = 0;
+  let frame = null;
 
-    wrapper.addEventListener('mousemove', (e) => {
-      const rect = wrapper.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-
-      const deltaX = (x - centerX) / centerX;
-      const deltaY = (y - centerY) / centerY;
-
-      // Base rotation + dynamic mouse offset
-      const rotateY = -12 + (deltaX * 14);
-      const rotateX = 6 - (deltaY * 12);
-
-      card.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg) scale(1.03)`;
-    });
-
-    wrapper.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
+  function update() {
+    frame = null;
+    if (reducedMotion.matches) return;
+    // Measure the untransformed wrapper to avoid feeding the animation into itself.
+    const rect = wrapper.getBoundingClientRect();
+    const viewport = window.innerHeight;
+    if (rect.bottom < -80 || rect.top > viewport + 80) return;
+    const center = rect.top + card.offsetTop + card.offsetHeight / 2;
+    const progress = clamp((viewport / 2 - center) / (viewport / 2 + card.offsetHeight / 2));
+    wrapper.style.setProperty('--book-x', `${(-progress * 9 - pointerY * 3).toFixed(2)}deg`);
+    wrapper.style.setProperty('--book-y', `${(progress * 10 + pointerX * 5).toFixed(2)}deg`);
+    wrapper.style.setProperty('--book-lift', `${(-progress * 12).toFixed(2)}px`);
+    wrapper.style.setProperty('--book-light', `${(50 + progress * 32 + pointerX * 12).toFixed(2)}%`);
+    wrapper.style.setProperty('--glow-drift', `${(progress * 18).toFixed(2)}px`);
   }
+
+  function scheduleUpdate() {
+    if (!reducedMotion.matches && frame === null) frame = requestAnimationFrame(update);
+  }
+
+  function syncMotionPreference() {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
+    pointerX = pointerY = 0;
+    wrapper.classList.toggle('has-book-motion', !reducedMotion.matches);
+    if (reducedMotion.matches) {
+      ['--book-x', '--book-y', '--book-lift', '--book-light', '--glow-drift']
+        .forEach(name => wrapper.style.removeProperty(name));
+    } else {
+      scheduleUpdate();
+    }
+  }
+
+  wrapper.addEventListener('pointermove', event => {
+    if (!finePointer.matches || reducedMotion.matches || event.pointerType === 'touch') return;
+    const rect = wrapper.getBoundingClientRect();
+    pointerX = clamp((event.clientX - rect.left - rect.width / 2) / (rect.width / 2));
+    pointerY = clamp((event.clientY - rect.top - rect.height / 2) / (rect.height / 2));
+    scheduleUpdate();
+  }, { passive: true });
+  wrapper.addEventListener('pointerleave', () => {
+    pointerX = pointerY = 0;
+    scheduleUpdate();
+  });
+  window.addEventListener('scroll', scheduleUpdate, { passive: true });
+  window.addEventListener('resize', scheduleUpdate, { passive: true });
+  window.addEventListener('pageshow', scheduleUpdate);
+  reducedMotion.addEventListener('change', syncMotionPreference);
+  syncMotionPreference();
 }
 
 function initScrollCenterSpotlight() {

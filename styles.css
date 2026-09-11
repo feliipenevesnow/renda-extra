@@ -73,6 +73,11 @@
 .skip-link:focus { top: 12px; }
 .hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; margin-top: 28px; }
 .secondary-link { color: var(--gold-primary); text-decoration: underline; text-underline-offset: 4px; }
+.hero-actions .secondary-link { transition: color .2s ease, text-underline-offset .2s ease; }
+.hero-actions .secondary-link:hover { color: #fff0b3; text-underline-offset: 7px; }
+.hero-actions .btn-cta::after { animation-duration: 9s; }
+.discover-arrow { flex-shrink: 0; transition: transform .25s ease; }
+.hero-actions .btn-cta:hover .discover-arrow { transform: translateY(3px); }
 .purchase-note { color: #cbd5e1; font-size: .9rem; margin: 20px 0; line-height: 1.7; }
 .results-note { color: #bac5d5; font-size: .875rem; line-height: 1.7; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 12px; margin-top: 20px; }
 .mockup-wrapper .mockup-caption { position: relative; max-width: 300px; text-align: center; font-size: .8rem; line-height: 1.6; color: #aab8cb; margin: 24px auto 0; }
@@ -593,6 +598,37 @@ h1, h2, h3, h4, h5, h6 {
 .book-3d-card img {
   width: 100%;
   display: block;
+}
+
+/* One scroll-driven movement, with a restrained reflection over the original cover. */
+.mockup-wrapper.has-book-motion .book-3d-card {
+  transform: translateY(var(--book-lift, 0px)) rotateX(var(--book-x, 0deg)) rotateY(var(--book-y, 0deg));
+  transform-origin: center;
+  transition: transform 140ms ease-out, box-shadow .4s ease;
+}
+.has-book-motion .book-3d-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 245, 215, .16) 48%, transparent 66%);
+  background-size: 240% 100%;
+  background-position: var(--book-light, 50%) center;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, .28), inset -3px 0 5px rgba(0, 0, 0, .18);
+}
+.mockup-wrapper.has-book-motion .mockup-glow {
+  animation: none;
+  transform: translate(-50%, calc(-50% + var(--glow-drift, 0px)));
+  transition: transform 180ms ease-out, opacity .4s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .learning-card { transition: transform .25s ease, border-color .25s ease; }
+  .learning-card:hover { transform: translateY(-3px); border-color: var(--border-highlight); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mockup-glow { transform: translate(-50%, -50%) !important; }
+  .learning-card:hover, .discover-arrow, .btn-cta:hover { transform: none !important; }
 }
 
 /* Floating Badges Around Book */
