@@ -2,24 +2,57 @@
 document.addEventListener('DOMContentLoaded', () => {
   initStickyMobileBar();
   init3DCardTilt();
+  initScrollDetails();
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     initScrollCenterSpotlight();
-    initSectionEntrances();
   }
 });
 
-// Enhance only elements entering the viewport; content stays visible without JS.
-function initSectionEntrances() {
-  if (!('IntersectionObserver' in window)) return;
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('section-arrived');
-      observer.unobserve(entry.target);
+// Position follows scrolling in both directions, rather than a one-time animation.
+function initScrollDetails() {
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const elements = Array.from(document.querySelectorAll(
+    '.section-header, .author-intro, .learning-card, .filter-card, .sample-box, .bonus-card, .offer-box, .guarantee-card, .faq-item'
+  ));
+  const offsets = new Map();
+  let frame = null;
+  function update() {
+    frame = null;
+    if (reduced.matches) return;
+    const viewport = window.innerHeight;
+    // Read geometry first; subtract our previous translation to prevent feedback.
+    const positions = elements.map(element => ({
+      element, top: element.getBoundingClientRect().top - (offsets.get(element) || 0)
+    }));
+    positions.forEach(({ element, top }) => {
+      const progress = Math.max(0, Math.min(1, (viewport * .94 - top) / (viewport * .34)));
+      const offset = (1 - progress) * 38;
+      offsets.set(element, offset);
+      element.style.setProperty('--scroll-rise', `${offset.toFixed(2)}px`);
+      element.style.setProperty('--scroll-opacity', (.78 + progress * .22).toFixed(3));
+      element.classList.add('scroll-detail');
     });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.section-header, .author-intro, .sample-box, .offer-box, .guarantee-card')
-    .forEach(element => observer.observe(element));
+  }
+  function schedule() {
+    if (!reduced.matches && frame === null) frame = requestAnimationFrame(update);
+  }
+  function syncPreference() {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
+    if (reduced.matches) {
+      elements.forEach(element => {
+        element.classList.remove('scroll-detail');
+        element.style.removeProperty('--scroll-rise');
+        element.style.removeProperty('--scroll-opacity');
+      });
+      offsets.clear();
+    } else schedule();
+  }
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  window.addEventListener('pageshow', schedule);
+  reduced.addEventListener('change', syncPreference);
+  syncPreference();
 }
 
 function initStickyMobileBar() {
@@ -70,9 +103,9 @@ function init3DCardTilt() {
     if (rect.bottom < -80 || rect.top > viewport + 80) return;
     const center = rect.top + card.offsetTop + card.offsetHeight / 2;
     const progress = clamp((viewport / 2 - center) / (viewport / 2 + card.offsetHeight / 2));
-    wrapper.style.setProperty('--book-x', `${(-progress * 9 - pointerY * 3).toFixed(2)}deg`);
-    wrapper.style.setProperty('--book-y', `${(progress * 10 + pointerX * 5).toFixed(2)}deg`);
-    wrapper.style.setProperty('--book-lift', `${(-progress * 12).toFixed(2)}px`);
+    wrapper.style.setProperty('--book-x', `${(-progress * 16 - pointerY * 3).toFixed(2)}deg`);
+    wrapper.style.setProperty('--book-y', `${(progress * 22 + pointerX * 5).toFixed(2)}deg`);
+    wrapper.style.setProperty('--book-lift', `${(-progress * 30).toFixed(2)}px`);
     wrapper.style.setProperty('--book-light', `${(50 + progress * 32 + pointerX * 12).toFixed(2)}%`);
     wrapper.style.setProperty('--glow-drift', `${(progress * 18).toFixed(2)}px`);
   }

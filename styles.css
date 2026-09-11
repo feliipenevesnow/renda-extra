@@ -3311,8 +3311,7 @@ main > section:not(.authority-strip):not(.guarantee-section)::after {
 .footer-nav-links a { width: fit-content; text-underline-offset: 5px; }
 .footer-nav-links a:hover { text-decoration: underline; }
 .footer-disclaimers { max-width: 100ch; }
-.section-arrived { animation: sectionArrival .6s cubic-bezier(.2, .65, .3, 1) both; }
-@keyframes sectionArrival { from { opacity: .86; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.scroll-detail { translate: 0 var(--scroll-rise, 0px); opacity: var(--scroll-opacity, 1); }
 @media (max-width: 991px) {
   .hero-proof-pills { justify-content: center; }
   .bonus-grid { grid-template-columns: 1fr; max-width: 680px; margin-inline: auto; }
@@ -3332,7 +3331,7 @@ main > section:not(.authority-strip):not(.guarantee-section)::after {
   .offer-box { padding: 30px 20px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .section-arrived { animation: none; }
+  .scroll-detail { translate: none; opacity: 1; }
   .pillar-card:hover, .pillar-card.is-center-active, .bonus-card:hover,
   .bonus-card.is-center-active { transform: none; }
 }
