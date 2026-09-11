@@ -1171,6 +1171,14 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
 }
 
+.calc-disclaimer-note {
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-top: 6px;
+  line-height: 1.35;
+  font-style: italic;
+}
+
 .btn-calc-cta {
   display: inline-flex;
   align-items: center;
