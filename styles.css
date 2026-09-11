@@ -1,6 +1,6 @@
 /* ==========================================================================
    DINHEIRO ONLINE AGORA 2026 - DESIGN SYSTEM & STYLES
-   Ultra-High Conversion, Mobile-First, Dark Luxury Aesthetic
+   Responsive landing page for an educational e-book
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
@@ -42,8 +42,8 @@
   --text-dark: #07080b;
 
   /* Typography */
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   /* Spacing */
   --container-max: 1140px;
@@ -64,6 +64,59 @@
   --transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-slow: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Product presentation, readable disclosures and native navigation. */
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--gold-primary); outline-offset: 5px; }
+.skip-link { position: fixed; top: -100px; left: 16px; z-index: 10000; padding: 12px 20px; background: var(--gold-primary); color: #07080b; }
+.skip-link:focus { top: 12px; }
+.hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; margin-top: 28px; }
+.secondary-link { color: var(--gold-primary); text-decoration: underline; text-underline-offset: 4px; }
+.purchase-note { color: #cbd5e1; font-size: .9rem; margin: 20px 0; line-height: 1.7; }
+.results-note { color: #bac5d5; font-size: .875rem; line-height: 1.7; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 12px; margin-top: 20px; }
+.book-preview { padding: 28px; min-height: 420px; background: linear-gradient(145deg, #16233b, #090f1c 75%); border: 1px solid #44516c; border-radius: 12px; display: flex; flex-direction: column; gap: 20px; }
+.book-preview h2 { font-size: 2.65rem; line-height: 1.05; letter-spacing: -1px; }
+.book-preview p { color: #dce3ee; font-size: 1rem; }
+.book-kicker { font-size: .65rem; letter-spacing: 2px; color: #facc15; }
+.book-rule { width: 50px; height: 3px; background: var(--gold-primary); }
+.book-number { font-size: 4.5rem; font-weight: 900; line-height: 1; color: var(--gold-primary); }
+.book-preview strong { font-size: .75rem; letter-spacing: 2px; }
+.mockup-wrapper .mockup-caption { max-width: 300px; text-align: center; font-size: .75rem; line-height: 1.6; color: #aab8cb; margin-top: 30px; }
+.author-intro { display: flex; align-items: center; gap: 24px; }
+.author-initials { width: 76px; height: 76px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid var(--border-highlight); border-radius: 50%; font-size: 1.6rem; font-weight: 700; color: var(--gold-primary); }
+.author-intro h2 { font-size: 1.35rem; margin-bottom: 8px; }
+.learning-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.learning-card, .sample-box { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: 20px; padding: 28px; }
+.learning-card h3, .sample-box h3 { margin: 16px 0 12px; font-size: 1.25rem; }
+.learning-card p, .sample-box p, .plain-list { color: #b5c1d3; line-height: 1.8; }
+.sample-box { max-width: 800px; margin: auto; }
+.sample-box ol, .plain-list { padding-left: 24px; margin: 18px 0; }
+.sample-box li, .plain-list li { margin-bottom: 14px; }
+.sample-box p { font-size: .9rem; }
+details.faq-item .faq-question { list-style: none; cursor: pointer; }
+details.faq-item .faq-question::-webkit-details-marker { display: none; }
+details.faq-item[open] .faq-answer { max-height: none; padding: 0 24px 24px; }
+details.faq-item[open] summary > span { transform: rotate(45deg); }
+.faq-answer a, .guarantee-content a, .legal-page a { color: var(--gold-primary); text-decoration: underline; overflow-wrap: anywhere; }
+.legal-page { position: relative; padding-top: 48px; padding-bottom: 72px; max-width: 860px; }
+.legal-page h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.2; margin: 32px 0 16px; }
+.legal-page h2 { margin: 32px 0 12px; font-size: 1.35rem; }
+.legal-page p { color: #cbd5e1; margin: 12px 0; line-height: 1.85; }
+.legal-date { font-size: .85rem; }
+.footer-author-meta a { overflow-wrap: anywhere; }
+@media (max-width: 991px) {
+  .hero-content .hero-actions { align-items: center; }
+  .learning-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 540px) {
+  .author-intro { flex-direction: column; text-align: center; }
+  .learning-card, .sample-box { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .book-3d-card { transform: none !important; }
 }
 
 /* --------------------------------------------------------------------------
@@ -3132,7 +3185,5 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.25);
 }
-
-
 
 
