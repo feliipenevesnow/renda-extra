@@ -4,8 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
   init3DCardTilt();
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     initScrollCenterSpotlight();
+    initSectionEntrances();
   }
 });
+
+// Enhance only elements entering the viewport; content stays visible without JS.
+function initSectionEntrances() {
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('section-arrived');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.section-header, .author-intro, .sample-box, .offer-box, .guarantee-card')
+    .forEach(element => observer.observe(element));
+}
 
 function initStickyMobileBar() {
   const bar = document.getElementById('mobileStickyBar');
